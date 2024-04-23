@@ -3,6 +3,7 @@ package ma.emsi.evaluationFournisseur.controllers;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.emsi.evaluationFournisseur.dtos.EvaluationDTO;
+import ma.emsi.evaluationFournisseur.dtos.ScoreDTO;
 import ma.emsi.evaluationFournisseur.entities.Evaluation;
 import ma.emsi.evaluationFournisseur.entities.Project;
 import ma.emsi.evaluationFournisseur.entities.Score;
@@ -111,19 +112,18 @@ public class EvaluationController {
         }
 
     }
-    @GetMapping("/evaluation/{id}")
-    public EvaluationDTO getEvaluationById(@PathVariable Long evaluationId)
+    @GetMapping("/evaluations/{id}")
+    public EvaluationDTO getEvaluationById(@PathVariable Long id)
     {
-        return evaluationService.getEvaluationById(evaluationId) ;
+        return evaluationService.getEvaluationById(id) ;
     }
 
     private Double calculateEvaluationScore(List<Score> scores) {
-        double evaluation_score = 0 ;
-        for (Score score : scores)
-        {
-            evaluation_score = evaluation_score + score.getScore()*score.getQuestion().getWeight() ;
+        double evaluation_score = 0;
+        for (Score score : scores) {
+            evaluation_score = evaluation_score + score.getScore() * score.getQuestion().getWeight();
         }
-        return evaluation_score ;
+        return evaluation_score;
     }
 
 
