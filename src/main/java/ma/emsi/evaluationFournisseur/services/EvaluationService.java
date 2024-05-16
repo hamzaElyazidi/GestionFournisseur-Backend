@@ -15,4 +15,6 @@ public interface EvaluationService {
     void deleteEvaluation(Long id);
 
     EvaluationDTO getEvaluationById(Long evaluationId);
+
+    List<EvaluationDTO> getEvaluationsOfGivenSupplier(Long supplierId);
 }

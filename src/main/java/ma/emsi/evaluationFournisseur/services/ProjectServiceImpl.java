@@ -3,18 +3,11 @@ package ma.emsi.evaluationFournisseur.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.emsi.evaluationFournisseur.dtos.ProjectDTO;
-import ma.emsi.evaluationFournisseur.entities.Evaluation;
-import ma.emsi.evaluationFournisseur.entities.Project;
-import ma.emsi.evaluationFournisseur.entities.ProjectManager;
-import ma.emsi.evaluationFournisseur.entities.Supplier;
+import ma.emsi.evaluationFournisseur.entities.*;
 import ma.emsi.evaluationFournisseur.mappers.ProjectMapper;
-import ma.emsi.evaluationFournisseur.repositories.EvaluationRepo;
-import ma.emsi.evaluationFournisseur.repositories.ProjectManagerRepo;
-import ma.emsi.evaluationFournisseur.repositories.ProjectRepo;
-import ma.emsi.evaluationFournisseur.repositories.SupplierRepo;
+import ma.emsi.evaluationFournisseur.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +27,9 @@ public class ProjectServiceImpl implements ProjectService{
     EvaluationRepo evaluationRepo ;
     @Autowired
     SupplierService supplierService ;
+    @Autowired
+    BuyeRepo buyeRepo ;
+
     @Override
     public List<ProjectDTO> getProjectsBySupplierId(Long supplierId)
     {
@@ -64,16 +60,46 @@ public class ProjectServiceImpl implements ProjectService{
         project.setDescription(projectDTO.getDescription());
         project.setStartsAt(projectDTO.getStartsAt());
         project.setEndsAt(projectDTO.getEndsAt());
-        project.setSupplier(getSupplierByName(projectDTO.getSupplierName()));
+        project.setSupplier(getSupplierById(projectDTO.getSupplierId()));
         project.setEvaluation(null);
-        project.setProjectManager(null);
-        projectRepository.save(project) ;
-        return projectDTO ;
+        project.setAmount(projectDTO.getAmount());
+        project.setProjectManager(getProjectManagerById(projectDTO.getProjectManagerId()));
+        project.setBuyer(getBuyerByUserId(projectDTO.getUserId()));
+        Project p2 = projectRepository.save(project) ;
+        return projectMapper.fromProject(p2) ;
+    }
+
+    private Buyer getBuyerByUserId(String userId) {
+        return buyeRepo.findByUserId(userId) ;
+    }
+
+    private ProjectManager getProjectManagerById(Long managerId) {
+
+        //return managerRepo.findByUserId(userId) ;
+          return managerRepo.findById(managerId).orElse(null);
+    }
+
+    private Supplier getSupplierById(Long supplierId) {
+        return supplierRepo.findById(supplierId).orElse(null) ;
     }
 
     @Override
     public List<ProjectDTO> getAllProjects() {
         return projectRepository.findAll().stream().map(project -> projectMapper.fromProject(project)).collect(Collectors.toList());
+    }
+    @Override
+    public List<ProjectDTO> getProjectsByUserId(String userId, String usertype) {
+        if (usertype.equals("BUYER"))
+        return projectRepository.findAll().stream().filter(project -> project.getBuyer()!=null).filter(project -> (project.getBuyer().getUserId().compareTo(userId))==0).map(project -> projectMapper.fromProject(project)).collect(Collectors.toList());
+        if (usertype.equals("MANAGER"))
+            return projectRepository.findAll().stream().filter(project -> project.getProjectManager()!=null).filter(project -> (project.getProjectManager().getUserId().compareTo(userId))==0).map(project -> projectMapper.fromProject(project)).collect(Collectors.toList());
+        return null ;
+    }
+
+    @Override
+    public ProjectDTO getProjectById(Long id) {
+        if (projectRepository.findById(id).isPresent()) return projectMapper.fromProject(projectRepository.findById(id).get()) ;
+        else return null ;
     }
 
     @Override
@@ -85,5 +111,7 @@ public class ProjectServiceImpl implements ProjectService{
         project.setSupplier(null);
         supplierRepo.save(supplier) ;
     }
+
+
 
 }

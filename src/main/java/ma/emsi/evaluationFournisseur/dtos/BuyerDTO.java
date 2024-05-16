@@ -1,15 +1,12 @@
 package ma.emsi.evaluationFournisseur.dtos;
 
 import lombok.Data;
-import lombok.ToString;
 
 @Data
-@ToString
-public class ManagerDTO {
+public class BuyerDTO {
     private Long id ;
     private String first_name ;
     private String last_name;
-    private String job_title ;
     private String email ;
     private String username ;
     private String password ;

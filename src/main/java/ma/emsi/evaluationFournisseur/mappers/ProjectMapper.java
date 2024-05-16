@@ -18,9 +18,13 @@ public class ProjectMapper {
         projectDTO.setSupplierId(project.getSupplier().getId());
         projectDTO.setProjectManagerName(project.getProjectManager()==null?null:project.getProjectManager().getFirst_name()+" " +project.getProjectManager().getLast_name());
         projectDTO.setSupplierName(project.getSupplier().getName());
+        projectDTO.setBuyerId(project.getBuyer()==null?null:project.getBuyer().getId());
+        projectDTO.setBuyerName(project.getBuyer()==null?null:project.getBuyer().getFirst_name()+" " +project.getBuyer().getLast_name());
         projectDTO.setEvaluationId(project.getEvaluation()==null?null:project.getEvaluation().getId());
         projectDTO.setEvaluation_score(project.getEvaluation()==null?null:project.getEvaluation().getEvaluation_score());
         projectDTO.setEvaluation_date(project.getEvaluation()==null?null:project.getEvaluation().getEvaluation_date());
+        projectDTO.setUserId(project.getProjectManager()==null?null:project.getProjectManager().getUserId());
+        projectDTO.setAmount(project.getAmount());
         return projectDTO ;
     }
 }

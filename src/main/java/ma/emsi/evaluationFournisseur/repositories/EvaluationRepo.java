@@ -9,4 +9,5 @@ public interface EvaluationRepo extends JpaRepository<Evaluation,Long> {
     @Modifying
     @Query("DELETE FROM Evaluation WHERE project.id = ?1")
     void deleteByProjectId(Long projectId) ;
+    Evaluation getEvaluationByProject_Id(Long projectId) ;
 }

@@ -20,8 +20,12 @@ public class ProjectDTO {
     private Long supplierId ;
     private Long projectManagerId ;
     private String projectManagerName ;
+    private Long buyerId ;
+    private String buyerName ;
     private String supplierName ;
     private Long evaluationId ;
     private Double evaluation_score ;
     private Date evaluation_date ;
+    private String userId ;
+    private Double amount ;
 }

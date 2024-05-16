@@ -16,6 +16,7 @@ public class EvaluationMapper {
     public  EvaluationDTO fromEvaluation(Evaluation evaluation)
     {
         EvaluationDTO evaluationDTO = new EvaluationDTO() ;
+        if (evaluation==null) return null ;
         evaluationDTO.setEvaluation_date(evaluation.getEvaluation_date());
         evaluationDTO.setEvaluation_score(evaluation.getEvaluation_score());
         evaluationDTO.setId(evaluation.getId());

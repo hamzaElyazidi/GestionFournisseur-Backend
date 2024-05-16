@@ -20,12 +20,12 @@ import java.util.List;
 public class SupplierController {
     @Autowired
     SupplierService supplierService ;
-    @PreAuthorize("hasAuthority('USER')")
+//    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/suppliers")
     public List<SupplierDTO> suppliers() {
         return supplierService.getAllSuppliers();
     }
-    @PreAuthorize("hasAuthority('USER')")
+//    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/suppliers/search")
     public List<SupplierDTO> searchSupplier(@RequestParam(name = "keyword" , defaultValue = "") String keyword)
     {

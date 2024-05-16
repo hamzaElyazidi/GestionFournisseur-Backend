@@ -11,15 +11,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectManager {
+public class Buyer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String first_name ;
     private String last_name ;
-    private String job_title ;
     private String email ;
-    @OneToMany(mappedBy = "projectManager" , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "buyer" , fetch = FetchType.LAZY)
     private List<Project> projects ;
     private String userId ;
 }

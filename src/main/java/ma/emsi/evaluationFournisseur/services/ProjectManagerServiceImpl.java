@@ -2,9 +2,12 @@ package ma.emsi.evaluationFournisseur.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.emsi.evaluationFournisseur.dtos.BuyerDTO;
 import ma.emsi.evaluationFournisseur.dtos.ManagerDTO;
 import ma.emsi.evaluationFournisseur.dtos.ProjectDTO;
+import ma.emsi.evaluationFournisseur.entities.ProjectManager;
 import ma.emsi.evaluationFournisseur.mappers.ProjectManagerMapper;
+import ma.emsi.evaluationFournisseur.repositories.BuyeRepo;
 import ma.emsi.evaluationFournisseur.repositories.ProjectManagerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +25,31 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     ProjectManagerRepo projectManagerRepo ;
     @Autowired
     ProjectManagerMapper projectManagerMapper;
+    @Autowired
+    BuyeRepo buyeRepo ;
 
     @Override
     public List<ManagerDTO> getAllManagers() {
         return projectManagerRepo.findAll().stream().map(projectManager -> projectManagerMapper.fromManager(projectManager)).collect(Collectors.toList());
     }
+
+    @Override
+    public ManagerDTO getManagerByUserId(String userId) {
+        return  projectManagerMapper.fromManager(projectManagerRepo.findByUserId(userId));
+    }
+
+    @Override
+    public BuyerDTO getBuyerByUserId(String userId) {
+        return projectManagerMapper.fromBuyer(buyeRepo.findByUserId(userId)) ;
+    }
+
+    @Override
+    public void saveManager(String userId , ManagerDTO managerDTO) {
+        ProjectManager projectManager = projectManagerMapper.fromManagerDTO(managerDTO) ;
+        projectManager.setUserId(userId);
+        projectManagerRepo.save(projectManager) ;
+    }
+
+
+
 }

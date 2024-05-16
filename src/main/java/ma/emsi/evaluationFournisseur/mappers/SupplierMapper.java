@@ -15,6 +15,11 @@ public class SupplierMapper {
         supplierDTO.setName(supplier.getName());
         supplierDTO.setDescription(supplier.getDescription());
         supplierDTO.setRating(supplier.getRating());
+        supplierDTO.setNumber_of_projects(supplier.getProjects()==null?0:supplier.getProjects().size());
+        supplierDTO.setSector(supplier.getSector());
+        supplierDTO.setEmail(supplier.getEmail());
+        supplierDTO.setPhone(supplier.getPhone());
+        supplierDTO.setWebsite(supplier.getWebsite());
         return supplierDTO ;
     }
     public  Supplier fromSupplierDTO(SupplierDTO supplierDTO)

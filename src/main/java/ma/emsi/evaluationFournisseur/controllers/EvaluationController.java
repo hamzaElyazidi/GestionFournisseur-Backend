@@ -13,10 +13,9 @@ import ma.emsi.evaluationFournisseur.repositories.ProjectRepo;
 import ma.emsi.evaluationFournisseur.repositories.QuestionRepo;
 import ma.emsi.evaluationFournisseur.repositories.ScoreRepo;
 import ma.emsi.evaluationFournisseur.services.EvaluationService;
-import ma.emsi.evaluationFournisseur.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import ma.emsi.evaluationFournisseur.services.SupplierService ;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,6 +83,10 @@ public class EvaluationController {
     @PostMapping("/evaluationV2")
     public EvaluationDTO saveEvaluation(@RequestBody EvaluationDTO evaluationDTO)
     {
+        System.out.println("GGGG");
+        evaluationDTO.getScores().stream().forEach(e-> System.out.println(e.getScore()));
+        System.out.println("HHH");
+
         if (projectRepo.findById(evaluationDTO.getProject_id()).isPresent()&&projectRepo.findById(evaluationDTO.getProject_id()).get().getEvaluation()!=null) return null ;
         Evaluation evaluation = new Evaluation() ;
         evaluation.setEvaluation_score(evaluationDTO.getEvaluation_score());
@@ -115,9 +118,15 @@ public class EvaluationController {
     @GetMapping("/evaluations/{id}")
     public EvaluationDTO getEvaluationById(@PathVariable Long id)
     {
+      //  System.out.println(evaluationService.getEvaluationById(id) +" I'm here" );
         return evaluationService.getEvaluationById(id) ;
     }
-
+    @GetMapping("/evaluations")
+    public List<EvaluationDTO> getEvaluationsOfGivenSupplier(@RequestParam(name = "supplierId" , defaultValue = "") Long supplierId)
+    {
+        evaluationService.getEvaluationsOfGivenSupplier(supplierId).forEach(evaluationDTO -> System.out.println(evaluationDTO));
+     return evaluationService.getEvaluationsOfGivenSupplier(supplierId) ;
+    }
     private Double calculateEvaluationScore(List<Score> scores) {
         double evaluation_score = 0;
         for (Score score : scores) {
@@ -125,6 +134,4 @@ public class EvaluationController {
         }
         return evaluation_score;
     }
-
-
 }

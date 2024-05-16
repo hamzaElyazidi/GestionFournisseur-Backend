@@ -18,4 +18,8 @@ public interface ProjectService {
     List<ProjectDTO> getAllProjects();
 
     void deleteProject(Long id);
+
+    List<ProjectDTO> getProjectsByUserId(String userId, String usertype);
+
+    ProjectDTO getProjectById(Long id);
 }

@@ -3,6 +3,7 @@ package ma.emsi.evaluationFournisseur.services;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.emsi.evaluationFournisseur.dtos.EvaluationDTO;
+import ma.emsi.evaluationFournisseur.dtos.ProjectDTO;
 import ma.emsi.evaluationFournisseur.dtos.ScoreDTO1;
 import ma.emsi.evaluationFournisseur.entities.Evaluation;
 import ma.emsi.evaluationFournisseur.entities.Project;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,5 +69,13 @@ public class EvaluationServiceImpl implements EvaluationService{
     public EvaluationDTO getEvaluationById(Long evaluationId) {
         if (evaluationRepo.findById(evaluationId).isEmpty()) return null;
         return evaluationMapper.fromEvaluation( evaluationRepo.findById(evaluationId).get() );
+    }
+
+    @Override
+    public List<EvaluationDTO> getEvaluationsOfGivenSupplier(Long supplierId) {
+       List<ProjectDTO> l =  projectService.getProjectsBySupplierId(supplierId) ;
+       List<Evaluation> evaluations = new ArrayList<>() ;
+       l.stream().forEach(projectDTO -> evaluations.add(evaluationRepo.getEvaluationByProject_Id(projectDTO.getId()))) ;
+       return evaluations.stream().map(evaluation -> evaluationMapper.fromEvaluation(evaluation)).filter(Objects::nonNull).collect(Collectors.toList());
     }
 }

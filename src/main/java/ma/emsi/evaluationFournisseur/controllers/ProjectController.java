@@ -28,6 +28,16 @@ public class ProjectController {
     {
         return projectService.getProjectsBySupplierId(supplierId) ;
     }
+    @GetMapping("/projects/my-projects")
+     public List<ProjectDTO> getProjectsByUserId(@RequestParam(name = "userId" , defaultValue = "") String userId ,@RequestParam(name = "usertype" , defaultValue = "") String usertype)
+    {
+        return projectService.getProjectsByUserId(userId,usertype) ;
+    }
+    @GetMapping("/projects/{id}")
+    public ProjectDTO getProjectById(@PathVariable Long id)
+    {
+        return projectService.getProjectById(id) ;
+    }
     @PostMapping("/projects")
     public ProjectDTO saveProject(@RequestBody ProjectDTO projectDTO)
     {
