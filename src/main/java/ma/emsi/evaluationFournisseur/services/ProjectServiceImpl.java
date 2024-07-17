@@ -9,6 +9,7 @@ import ma.emsi.evaluationFournisseur.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -29,7 +30,8 @@ public class ProjectServiceImpl implements ProjectService{
     SupplierService supplierService ;
     @Autowired
     BuyeRepo buyeRepo ;
-
+@Autowired
+ProjectEventRepo projectEventRepo ;
     @Override
     public List<ProjectDTO> getProjectsBySupplierId(Long supplierId)
     {
@@ -51,6 +53,28 @@ public class ProjectServiceImpl implements ProjectService{
     public ProjectManager getProjectManagerByFirstAndLastName(String projectManagerName) {
         return managerRepo.findAll().stream().filter(projectManager -> (projectManager.getFirst_name()+" "+projectManager.getLast_name()).equals(projectManagerName)).collect(Collectors.toList()).get(0);
     }
+
+    @Override
+    public ProjectDTO updateProject(ProjectDTO projectDTO) {
+        Project project = projectRepository.findById(projectDTO.getId()).orElseThrow() ;
+        project.setN_contract(projectDTO.getN_contract());
+        project.setDescription(projectDTO.getDescription());
+        project.setStartsAt(projectDTO.getStartsAt());
+        project.setEndsAt(projectDTO.getEndsAt());
+        project.setSupplier(getSupplierById(projectDTO.getSupplierId()));
+        project.setEvaluation(getEvaluationById(projectDTO.getEvaluationId()));
+        project.setAmount(projectDTO.getAmount());
+        project.setProjectManager(getProjectManagerById(projectDTO.getProjectManagerId()));
+        project.setBuyer(getBuyerByUserId(projectDTO.getUserId()));
+        projectRepository.save(project) ;
+        return projectMapper.fromProject(project);
+    }
+
+    @Override
+    public List<ProjectEvent> getProjectEventsByManagerId(Long id) {
+        return projectEventRepo.findByProjectManagerId(id);
+    }
+
 
     @Override
     public ProjectDTO saveProject(ProjectDTO projectDTO)
@@ -78,6 +102,12 @@ public class ProjectServiceImpl implements ProjectService{
         //return managerRepo.findByUserId(userId) ;
           return managerRepo.findById(managerId).orElse(null);
     }
+    private Evaluation getEvaluationById(Long evaluationId) {
+        if (evaluationId==null) return null ;
+        if (evaluationRepo.findById(evaluationId).isPresent())
+            return evaluationRepo.findById(evaluationId).get();
+        return null ;
+    }
 
     private Supplier getSupplierById(Long supplierId) {
         return supplierRepo.findById(supplierId).orElse(null) ;
@@ -101,6 +131,18 @@ public class ProjectServiceImpl implements ProjectService{
         if (projectRepository.findById(id).isPresent()) return projectMapper.fromProject(projectRepository.findById(id).get()) ;
         else return null ;
     }
+
+    @Override
+    public void updateProjectDates(ProjectDTO projectDTO) {
+        if (projectRepository.findById(projectDTO.getId()).isPresent())
+        {
+            Project project = projectRepository.findById(projectDTO.getId()).get() ;
+            project.setStartsAt(projectDTO.getStartsAt());
+            project.setEndsAt(projectDTO.getEndsAt());
+            projectRepository.save(project) ;
+        }
+    }
+
 
     @Override
     public void deleteProject(Long id) {

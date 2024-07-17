@@ -2,6 +2,7 @@ package ma.emsi.evaluationFournisseur;
 
 import ma.emsi.evaluationFournisseur.repositories.*;
 import ma.emsi.evaluationFournisseur.services.EvaluationService;
+import ma.emsi.evaluationFournisseur.services.KeycloakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +27,8 @@ public class EvaluationFournisseurApplication implements CommandLineRunner{
 //	@Autowired
 //	KeycloakService keycloakService ;
 
+//	@Autowired
+//	ProjectEventConsumer projectEventConsumer ;
 	public static void main(String[] args) {
 		SpringApplication.run(EvaluationFournisseurApplication.class, args);
 	}
@@ -33,7 +36,11 @@ public class EvaluationFournisseurApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 //		KeycloakService keycloakService = new KeycloakService() ;
 //		System.out.println("RUN");
-//		keycloakService.createUser("fadi","1234");
+//		keycloakService.deleteUserById("571dde2d-7e9d-4d27-83a6-2e647f6789bf");
 //		System.out.println("DONE");
 	}
+//	public void setTopic(String projectManagerId, ProjectEvent event) {
+//		// Assuming project manager ID and event details are provided
+//		projectEventConsumer.projectEventConsumer2().accept(event);
+//	}
 }

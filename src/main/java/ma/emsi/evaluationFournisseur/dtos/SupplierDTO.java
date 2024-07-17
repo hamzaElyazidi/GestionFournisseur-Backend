@@ -12,6 +12,6 @@ public class SupplierDTO {
     private long number_of_projects ;
     private String website ;
     private String phone ;
-    private String email ;
+    private String mail;
     private industrySector sector ;
 }

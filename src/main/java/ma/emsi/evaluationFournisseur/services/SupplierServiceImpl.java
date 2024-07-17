@@ -35,6 +35,7 @@ public class SupplierServiceImpl implements SupplierService{
     @Override
     public SupplierDTO getSupplierById(Long id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null) ;
+        System.out.println("mail : " + supplierRepository.findById(id).get().getMail());
         if (supplier != null )
             return supplierMapper.fromSupplier(supplier);
         return null ;
@@ -55,9 +56,14 @@ public class SupplierServiceImpl implements SupplierService{
 
     @Override
     public SupplierDTO updateSupplier(SupplierDTO supplierDTO) {
+        System.out.println(supplierDTO);
         Supplier supplier = supplierRepository.findById(supplierDTO.getId()).orElseThrow() ;
         supplier.setName(supplierDTO.getName());
         supplier.setDescription(supplierDTO.getDescription());
+        supplier.setMail(supplierDTO.getMail());
+        supplier.setPhone(supplierDTO.getPhone());
+        supplier.setWebsite(supplierDTO.getWebsite());
+        supplier.setSector(supplierDTO.getSector());
         supplierRepository.save(supplier) ;
         return supplierMapper.fromSupplier(supplier);
     }

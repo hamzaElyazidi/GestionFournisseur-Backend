@@ -13,10 +13,13 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "n_contract")})
+
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "n_contract", unique = true, nullable = false)
     private String n_contract;
     @Lob
     @Column(columnDefinition = "BLOB")

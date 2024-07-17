@@ -8,6 +8,7 @@ import ma.emsi.evaluationFournisseur.entities.Supplier;
 import ma.emsi.evaluationFournisseur.services.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,20 +40,25 @@ public class SupplierController {
     }
     @PostMapping("/suppliers")
  //  @PreAuthorize("hasAuthority('ADMIN')")
-    public SupplierDTO saveSupplier(@RequestBody SupplierDTO supplierDTO)
+    public ResponseEntity<SupplierDTO> saveSupplier(@RequestBody SupplierDTO supplierDTO)
     {
-        return supplierService.saveSupplier(supplierDTO) ;
+        SupplierDTO createdSupplierDTO = supplierService.saveSupplier(supplierDTO) ;
+        return ResponseEntity.ok(createdSupplierDTO);
     }
     @DeleteMapping("/suppliers/{id}")
  //  @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteSupplier(@PathVariable Long id){supplierService.deleteSupplier(id);}
     @GetMapping("/suppliers/{id}")
  //  @PreAuthorize("hasAuthority('USER')")
-    public SupplierDTO getSupplierById(@PathVariable Long id){return supplierService.getSupplierById(id);}
+    public SupplierDTO getSupplierById(@PathVariable Long id){
+      //  System.out.println(supplierService.getSupplierById(id));
+        return supplierService.getSupplierById(id);
+    }
     @PutMapping("/suppliers")
  //   @PreAuthorize("hasAuthority('ADMIN')")
     public SupplierDTO updateSupplier(@RequestBody SupplierDTO supplierDTO)
     {
         return supplierService.updateSupplier(supplierDTO);
     }
+
 }

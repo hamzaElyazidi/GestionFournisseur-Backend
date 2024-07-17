@@ -8,7 +8,15 @@ import java.util.List;
 public interface ProjectManagerService {
     List<ManagerDTO> getAllManagers() ;
     ManagerDTO getManagerByUserId(String userId);
-    void saveManager(String userId , ManagerDTO managerDTO) ;
+    ManagerDTO saveManager(String userId , ManagerDTO managerDTO) ;
 
     BuyerDTO getBuyerByUserId(String userId);
+
+    BuyerDTO saveBuyer(String userId, BuyerDTO buyerDTO);
+
+    ManagerDTO getManagerById(Long id);
+
+    List<BuyerDTO> getAllBuyers();
+
+    void deleteProjectManagerById(Long id);
 }

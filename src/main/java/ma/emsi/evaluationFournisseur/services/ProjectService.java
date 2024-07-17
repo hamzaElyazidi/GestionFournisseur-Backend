@@ -1,6 +1,7 @@
 package ma.emsi.evaluationFournisseur.services;
 
 import ma.emsi.evaluationFournisseur.dtos.ProjectDTO;
+import ma.emsi.evaluationFournisseur.entities.ProjectEvent;
 import ma.emsi.evaluationFournisseur.entities.ProjectManager;
 import ma.emsi.evaluationFournisseur.entities.Supplier;
 
@@ -22,4 +23,10 @@ public interface ProjectService {
     List<ProjectDTO> getProjectsByUserId(String userId, String usertype);
 
     ProjectDTO getProjectById(Long id);
+
+    void updateProjectDates(ProjectDTO projectDTO);
+
+    ProjectDTO updateProject(ProjectDTO projectDTO);
+
+    List<ProjectEvent> getProjectEventsByManagerId(Long id);
 }

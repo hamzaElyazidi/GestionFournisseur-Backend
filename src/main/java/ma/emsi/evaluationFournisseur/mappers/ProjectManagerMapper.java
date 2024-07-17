@@ -30,7 +30,15 @@ public class ProjectManagerMapper {
         projectManager.setUserId(null);
         return projectManager ;
     }
-
+    public Buyer fromBuyerDTO(BuyerDTO buyerDTO) {
+        Buyer buyer = new Buyer() ;
+        buyer.setProjects(null);
+        buyer.setEmail(buyerDTO.getEmail());
+        buyer.setFirst_name(buyerDTO.getFirst_name());
+        buyer.setLast_name(buyerDTO.getLast_name());
+        buyer.setUserId(null);
+        return buyer ;
+    }
     public BuyerDTO fromBuyer(Buyer buyer) {
         BuyerDTO buyerDTO = new BuyerDTO() ;
         buyerDTO.setId(buyer.getId());
@@ -39,4 +47,6 @@ public class ProjectManagerMapper {
         buyerDTO.setEmail(buyer.getEmail());
         return buyerDTO ;
     }
+
+
 }

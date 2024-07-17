@@ -14,10 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name", unique = true, nullable = false)
     private String name ;
     @Lob
     @Column(columnDefinition = "BLOB")
@@ -27,7 +29,7 @@ public class Supplier {
     private industrySector sector ;
     private String website ;
     private String phone ;
-    private String email ;
+    private String mail;
     @OneToMany(mappedBy = "supplier" , cascade = CascadeType.REMOVE , orphanRemoval = true)
     private List<Project> projects ;
 }

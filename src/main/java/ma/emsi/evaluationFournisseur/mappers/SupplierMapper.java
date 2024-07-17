@@ -1,6 +1,5 @@
 package ma.emsi.evaluationFournisseur.mappers;
 
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import ma.emsi.evaluationFournisseur.dtos.SupplierDTO;
 import ma.emsi.evaluationFournisseur.entities.Supplier;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +16,7 @@ public class SupplierMapper {
         supplierDTO.setRating(supplier.getRating());
         supplierDTO.setNumber_of_projects(supplier.getProjects()==null?0:supplier.getProjects().size());
         supplierDTO.setSector(supplier.getSector());
-        supplierDTO.setEmail(supplier.getEmail());
+        supplierDTO.setMail(supplier.getMail());
         supplierDTO.setPhone(supplier.getPhone());
         supplierDTO.setWebsite(supplier.getWebsite());
         return supplierDTO ;

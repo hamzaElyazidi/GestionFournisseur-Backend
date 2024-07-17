@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.emsi.evaluationFournisseur.dtos.BuyerDTO;
 import ma.emsi.evaluationFournisseur.dtos.ManagerDTO;
-import ma.emsi.evaluationFournisseur.dtos.ProjectDTO;
+import ma.emsi.evaluationFournisseur.entities.Buyer;
 import ma.emsi.evaluationFournisseur.entities.ProjectManager;
 import ma.emsi.evaluationFournisseur.mappers.ProjectManagerMapper;
 import ma.emsi.evaluationFournisseur.repositories.BuyeRepo;
@@ -34,7 +34,19 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     }
 
     @Override
+    public List<BuyerDTO> getAllBuyers() {
+        return buyeRepo.findAll().stream().map(buyer -> projectManagerMapper.fromBuyer(buyer)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteProjectManagerById(Long id) {
+
+    }
+
+
+    @Override
     public ManagerDTO getManagerByUserId(String userId) {
+        System.out.println("MANAGER IN REPO : " + projectManagerRepo.findByUserId(userId).getFirst_name());
         return  projectManagerMapper.fromManager(projectManagerRepo.findByUserId(userId));
     }
 
@@ -44,10 +56,25 @@ public class ProjectManagerServiceImpl implements ProjectManagerService {
     }
 
     @Override
-    public void saveManager(String userId , ManagerDTO managerDTO) {
+    public BuyerDTO saveBuyer(String userId, BuyerDTO buyerDTO) {
+        Buyer buyer = projectManagerMapper.fromBuyerDTO(buyerDTO) ;
+        buyer.setUserId(userId);
+        return projectManagerMapper.fromBuyer(buyeRepo.save(buyer)) ;
+    }
+
+    @Override
+    public ManagerDTO getManagerById(Long id) {
+        if (projectManagerRepo.findById(id).isPresent())
+        return projectManagerMapper.fromManager(projectManagerRepo.findById(id).get()) ;
+         return null ;
+    }
+
+
+    @Override
+    public ManagerDTO saveManager(String userId , ManagerDTO managerDTO) {
         ProjectManager projectManager = projectManagerMapper.fromManagerDTO(managerDTO) ;
         projectManager.setUserId(userId);
-        projectManagerRepo.save(projectManager) ;
+        return projectManagerMapper.fromManager(projectManagerRepo.save(projectManager)) ;
     }
 
 
